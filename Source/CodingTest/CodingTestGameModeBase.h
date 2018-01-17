@@ -13,6 +13,9 @@ UCLASS()
 class CODINGTEST_API ACodingTestGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+public:
+	ACodingTestGameModeBase(const FObjectInitializer& PCIP);
+	void BeginPlay();
 	
 	
 	

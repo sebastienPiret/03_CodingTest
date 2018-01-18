@@ -4,19 +4,25 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "MyActor.generated.h"
+#include "HierarchyActor.generated.h"
 
 UCLASS()
-class CODINGTEST_API AMyActor : public AActor
+class CODINGTEST_API AHierarchyActor : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AMyActor();
+	AHierarchyActor();
 
 	UPROPERTY()
-		UStaticMeshComponent* mesh;
+		USceneComponent* root;
+	UPROPERTY()
+		USceneComponent* childSceneComponent;
+	UPROPERTY()
+		UStaticMeshComponent* boxOne;
+	UPROPERTY()
+		UStaticMeshComponent* boxTwo;
 
 protected:
 	// Called when the game starts or when spawned

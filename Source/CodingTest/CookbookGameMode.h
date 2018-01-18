@@ -20,5 +20,7 @@ class CODINGTEST_API ACookbookGameMode : public AGameMode
 	
 	UPROPERTY()
 		AMyActor* spawnedActor;
+	UFUNCTION()
+		void DestroyActor();
 	
 };

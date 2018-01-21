@@ -3,22 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
-#include "Components/ActorComponent.h"
-#include "RandomMovementComp.generated.h"
+#include "Components/SceneComponent.h"
+#include "OrbitingMovementComp.generated.h"
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class CODINGTEST_API URandomMovementComp : public UActorComponent
+class CODINGTEST_API UOrbitingMovementComp : public USceneComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	URandomMovementComp();
-
-	UPROPERTY(EditAnywhere, Category=movement)
-		float movementRadius;
+	UOrbitingMovementComp();
 
 protected:
 	// Called when the game starts
@@ -28,6 +24,13 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UPROPERTY(EditAnywhere)
+		bool rotateToFaceTowards;
+	UPROPERTY(EditAnywhere)
+		float rotationSpeed;
+	UPROPERTY(EditAnywhere)
+		float orbitDistance;
+	float currentValue;
 		
 	
 };

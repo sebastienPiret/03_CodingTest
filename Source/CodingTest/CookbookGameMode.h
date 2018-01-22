@@ -5,22 +5,21 @@
 #include "CoreMinimal.h"
 #include "MyActor.h"
 #include "GameFramework/Actor.h"
-#include "GameFramework/GameMode.h"
+#include "GameFramework/GameModeBase.h"
 #include "CookbookGameMode.generated.h"
 
 /**
  * 
  */
+DECLARE_DELEGATE(FStandardDelegateSignature)
 UCLASS()
-class CODINGTEST_API ACookbookGameMode : public AGameMode
+class CODINGTEST_API ACookbookGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
 		virtual void BeginPlay() override;
 	
-	UPROPERTY()
-		AMyActor* spawnedActor;
-	UFUNCTION()
-		void DestroyActor();
-	
+
+public:
+	FStandardDelegateSignature MyStandardDelegate;
 };

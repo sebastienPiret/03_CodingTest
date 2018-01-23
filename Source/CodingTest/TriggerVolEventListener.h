@@ -4,17 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "MyTriggerVolume.h"
 #include "Components/PointLightComponent.h"
-#include "DelegateListener.generated.h"
+#include "TriggerVolEventListener.generated.h"
 
 UCLASS()
-class CODINGTEST_API ADelegateListener : public AActor
+class CODINGTEST_API ATriggerVolEventListener : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ADelegateListener();
+	ATriggerVolEventListener();
 
 protected:
 	// Called when the game starts or when spawned
@@ -24,14 +25,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	
-	UFUNCTION()
-		void EnableLight();
+	UPointLightComponent* pointLight;
 
+	UPROPERTY(EditAnywhere)
+		AMyTriggerVolume* triggerEventSource;
 	UFUNCTION()
-		virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+		void OnTriggerEvent();
 	
-	UPROPERTY()
-		UPointLightComponent* pointLight;
-	bool switchLight;
 };

@@ -4,17 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Components/PointLightComponent.h"
-#include "DelegateListener.generated.h"
+#include "TimeOfDayHandler.generated.h"
 
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnTimeChangedSignature, int32,int32)
 UCLASS()
-class CODINGTEST_API ADelegateListener : public AActor
+class CODINGTEST_API ATimeOfDayHandler : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ADelegateListener();
+	ATimeOfDayHandler();
 
 protected:
 	// Called when the game starts or when spawned
@@ -24,14 +24,14 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	
-	UFUNCTION()
-		void EnableLight();
-
-	UFUNCTION()
-		virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	FOnTimeChangedSignature OnTimeChanged;
 	
 	UPROPERTY()
-		UPointLightComponent* pointLight;
-	bool switchLight;
+		int32 timeScale;
+	UPROPERTY()
+		int32 hours;
+	UPROPERTY()
+		int32 minutes;
+	UPROPERTY()
+		float seconds;
 };

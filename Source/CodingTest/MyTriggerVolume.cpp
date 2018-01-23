@@ -42,6 +42,9 @@ void AMyTriggerVolume::NotifyActorBeginOverlap(AActor * OtherActor)
 		AGameModeBase* GameMode = UGameplayStatics::GetGameMode(theWorld);
 		ACookbookGameMode * MyGameMode = Cast<ACookbookGameMode>(GameMode);
 		MyGameMode->MyStandardDelegate.ExecuteIfBound();
+		MyGameMode->MyParamDelegate.ExecuteIfBound(FLinearColor(1,0,0,1));
+		MyGameMode->MyMulticastDelegate.Broadcast();
+		onPlayerEntered.Broadcast();
 	}
 }
 
@@ -49,5 +52,15 @@ void AMyTriggerVolume::NotifyActorEndOverlap(AActor * OtherActor)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, FString::Printf(TEXT("%s left me."), *(OtherActor->GetName())));
 	UE_LOG(LogTemp, Warning, TEXT("je sors"));
+	UWorld* theWorld = GetWorld();
+	if (theWorld != nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("j'entre"));
+		AGameModeBase* GameMode = UGameplayStatics::GetGameMode(theWorld);
+		ACookbookGameMode * MyGameMode = Cast<ACookbookGameMode>(GameMode);
+		MyGameMode->MyStandardDelegate.ExecuteIfBound();
+		MyGameMode->MyParamDelegate.ExecuteIfBound(FLinearColor(255, 255, 255, 1));
+		MyGameMode->MyMulticastDelegate.Broadcast();
+	}
 }
 

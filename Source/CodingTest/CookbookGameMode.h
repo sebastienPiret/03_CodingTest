@@ -12,6 +12,8 @@
  * 
  */
 DECLARE_DELEGATE(FStandardDelegateSignature)
+DECLARE_DELEGATE_OneParam(FParamDelagateSignature,FLinearColor)
+DECLARE_MULTICAST_DELEGATE(FMulticastDelegateSignature)
 UCLASS()
 class CODINGTEST_API ACookbookGameMode : public AGameModeBase
 {
@@ -22,4 +24,7 @@ class CODINGTEST_API ACookbookGameMode : public AGameModeBase
 
 public:
 	FStandardDelegateSignature MyStandardDelegate;
-};
+	FParamDelagateSignature MyParamDelegate;
+	FMulticastDelegateSignature MyMulticastDelegate;
+	
+}; 

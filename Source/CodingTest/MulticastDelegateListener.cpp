@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "DelegateListener.h"
+#include "MulticastDelegateListener.h"
 #include "CookbookGameMode.h"
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
@@ -8,19 +8,17 @@
 
 
 // Sets default values
-ADelegateListener::ADelegateListener()
+AMulticastDelegateListener::AMulticastDelegateListener()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	pointLight = CreateDefaultSubobject<UPointLightComponent>("pointLight");
+	pointLight = CreateDefaultSubobject<UPointLightComponent>("togglingLight");
 	RootComponent = pointLight;
-	switchLight = false;
-	pointLight->SetVisibility(switchLight);
 }
 
 // Called when the game starts or when spawned
-void ADelegateListener::BeginPlay()
+void AMulticastDelegateListener::BeginPlay()
 {
 	Super::BeginPlay();
 	
@@ -31,26 +29,24 @@ void ADelegateListener::BeginPlay()
 		ACookbookGameMode* myGameMode = Cast<ACookbookGameMode>(gameMode);
 		if (myGameMode != nullptr)
 		{
-			myGameMode->MyStandardDelegate.BindUObject(this, &ADelegateListener::EnableLight);
+			myGameMode->MyMulticastDelegate.AddUObject(this, &AMulticastDelegateListener::ToggleLight);
 		}
 	}
 }
 
 // Called every frame
-void ADelegateListener::Tick(float DeltaTime)
+void AMulticastDelegateListener::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
-void ADelegateListener::EnableLight()
+void AMulticastDelegateListener::ToggleLight()
 {
-	switchLight = !switchLight;
-	pointLight->SetVisibility(switchLight);
-	
+	pointLight->ToggleVisibility();
 }
 
-void ADelegateListener::EndPlay(const EEndPlayReason::Type EndPlayReason)
+void AMulticastDelegateListener::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 	UWorld* theWorld = GetWorld();
@@ -60,7 +56,7 @@ void ADelegateListener::EndPlay(const EEndPlayReason::Type EndPlayReason)
 		ACookbookGameMode* myGameMode = Cast<ACookbookGameMode>(gameMode);
 		if (myGameMode != nullptr)
 		{
-			myGameMode->MyStandardDelegate.Unbind();
+			myGameMode->MyMulticastDelegate.Remove(myDelagateHandle);
 		}
 	}
 }

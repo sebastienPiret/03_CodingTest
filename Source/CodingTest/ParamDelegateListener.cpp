@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "DelegateListener.h"
+#include "ParamDelegateListener.h"
 #include "CookbookGameMode.h"
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
@@ -8,19 +8,18 @@
 
 
 // Sets default values
-ADelegateListener::ADelegateListener()
+AParamDelegateListener::AParamDelegateListener()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	pointLight = CreateDefaultSubobject<UPointLightComponent>("pointLight");
+	pointLight = CreateDefaultSubobject<UPointLightComponent>("pointLightColored");
 	RootComponent = pointLight;
-	switchLight = false;
-	pointLight->SetVisibility(switchLight);
+	pointLight->SetVisibility(false);
 }
 
 // Called when the game starts or when spawned
-void ADelegateListener::BeginPlay()
+void AParamDelegateListener::BeginPlay()
 {
 	Super::BeginPlay();
 	
@@ -31,26 +30,25 @@ void ADelegateListener::BeginPlay()
 		ACookbookGameMode* myGameMode = Cast<ACookbookGameMode>(gameMode);
 		if (myGameMode != nullptr)
 		{
-			myGameMode->MyStandardDelegate.BindUObject(this, &ADelegateListener::EnableLight);
+			myGameMode->MyParamDelegate.BindUObject(this, &AParamDelegateListener::SetLightColor,true);
 		}
 	}
 }
 
 // Called every frame
-void ADelegateListener::Tick(float DeltaTime)
+void AParamDelegateListener::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
-void ADelegateListener::EnableLight()
+void AParamDelegateListener::SetLightColor(FLinearColor lightColor, bool enableLight)
 {
-	switchLight = !switchLight;
-	pointLight->SetVisibility(switchLight);
-	
+	pointLight->SetLightColor(lightColor);
+	pointLight->SetVisibility(enableLight);
 }
 
-void ADelegateListener::EndPlay(const EEndPlayReason::Type EndPlayReason)
+void AParamDelegateListener::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 	UWorld* theWorld = GetWorld();
@@ -60,8 +58,7 @@ void ADelegateListener::EndPlay(const EEndPlayReason::Type EndPlayReason)
 		ACookbookGameMode* myGameMode = Cast<ACookbookGameMode>(gameMode);
 		if (myGameMode != nullptr)
 		{
-			myGameMode->MyStandardDelegate.Unbind();
+			myGameMode->MyParamDelegate.Unbind();
 		}
 	}
 }
-

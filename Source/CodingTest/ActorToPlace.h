@@ -4,17 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Components/PointLightComponent.h"
-#include "DelegateListener.generated.h"
+#include "Components/StaticMeshComponent.h"
+#include "ActorToPlace.generated.h"
 
 UCLASS()
-class CODINGTEST_API ADelegateListener : public AActor
+class CODINGTEST_API AActorToPlace : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ADelegateListener();
+	AActorToPlace();
 
 protected:
 	// Called when the game starts or when spawned
@@ -24,14 +24,14 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	
-	UFUNCTION()
-		void EnableLight();
-
-	UFUNCTION()
-		virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	
 	UPROPERTY()
-		UPointLightComponent* pointLight;
-	bool switchLight;
+		UStaticMeshComponent* staticCube;
+	UPROPERTY()
+		UStaticMeshComponent* childCube;
+	
+	UWorld* theWorld;
+	UPROPERTY()
+		USceneComponent* rootSceneComponent;
+	UPROPERTY()
+		USceneComponent* childComponent;
 };

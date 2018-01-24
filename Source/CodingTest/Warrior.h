@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/PlayerInput.h"
+#include "Camera/CameraComponent.h"
 #include "Warrior.generated.h"
 
 UCLASS()
@@ -26,14 +28,18 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	FVector2D lastInput;
+
 	void Forward(float amount);
-
 	void Backward(float amount);
-
 	void Left(float amount);
-
 	void Right(float amount);
 
+	// implementing camera
+	/*FVector2D cameraInput;
+	void PitchCamera(float AxisValue);
+	void YawCamera(float AxisValue);
 	
-	
+	UCameraComponent* theCamera;
+	USpringArmComponent* OurCameraSpringArm;*/
 };

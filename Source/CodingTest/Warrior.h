@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/PlayerInput.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Warrior.generated.h"
 
 UCLASS()
@@ -28,6 +29,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	virtual void PostInitializeComponents() override;
+
 	FVector2D lastInput;
 
 	void Forward(float amount);
@@ -42,4 +45,17 @@ public:
 	
 	UCameraComponent* theCamera;
 	USpringArmComponent* OurCameraSpringArm;*/
+
+	UFUNCTION(BlueprintNativeEvent, Category = Collision)
+		void OnOverlapsBegin(
+			UPrimitiveComponent* Comp,
+			AActor* OtherActor, UPrimitiveComponent* OtherComp,
+			int32 OtherBodyIndex,
+			bool bFromSweep, const FHitResult&SweepResult);
+
+	UFUNCTION(BlueprintNativeEvent, Category = Collision)
+		void OnOverlapsEnd(
+			UPrimitiveComponent* Comp,
+			AActor* OtherActor, UPrimitiveComponent* OtherComp,
+			int32 OtherBodyIndex);
 };

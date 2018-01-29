@@ -104,6 +104,19 @@ void AWarrior::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	input->AddAxisMapping(GPyawKey);*/
 }
 
+void AWarrior::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	if (RootComponent)
+	{
+		// Attach contact function to all bounding components.
+		GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(
+			this, &AWarrior::OnOverlapsBegin);
+		GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(
+			this, &AWarrior::OnOverlapsEnd);
+	}
+}
+
 void AWarrior::Forward(float amount)
 {
 	// move the player forward by amount given by axis mapping
@@ -124,6 +137,21 @@ void AWarrior::Right(float amount)
 	// move the player forward by amount given by axis mapping
 	//AddMovementInput(GetActorRightVector(), amount);
 	lastInput.X += amount;
+}
+
+void AWarrior::OnOverlapsBegin_Implementation(
+	UPrimitiveComponent* Comp,
+	AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep, const FHitResult&SweepResult)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Overlaps warrior began"));
+}
+
+
+void AWarrior::OnOverlapsEnd_Implementation(UPrimitiveComponent * Comp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Overlaps warrior ended"));
 }
 
 void AWarrior::Left(float amount)
